@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.14.1.0] - 2026-03-30 — Sidebar CSS Inspector + Per-Tab Agents
+## [0.14.2.0] - 2026-03-30 — Sidebar CSS Inspector + Per-Tab Agents
 
 The sidebar is now a visual design tool. Pick any element on the page and see the full CSS rule cascade, box model, and computed styles right in the Side Panel. Edit styles live and see changes instantly. Each browser tab gets its own independent agent, so you can work on multiple pages simultaneously without cross-talk. Cleanup is LLM-powered... the agent snapshots the page, understands it semantically, and removes the junk while keeping the site's identity.
 
@@ -29,6 +29,20 @@ The sidebar is now a visual design tool. Pick any element on the page and see th
 - **Sidebar banner** now says "Browser co-pilot" instead of the old mode-specific text.
 - **Input placeholder** is "Ask about this page..." (more inviting than the old placeholder).
 - **System prompt** includes prompt injection defense and allowed-commands whitelist from the security audit.
+
+## [0.14.1.0] - 2026-03-30 — Comparison Board is the Chooser
+
+The design comparison board now always opens automatically when reviewing variants. No more inline image + "which do you prefer?" — the board has rating controls, comments, remix/regenerate buttons, and structured feedback output. That's the experience. All 3 design skills (/plan-design-review, /design-shotgun, /design-consultation) get this fix.
+
+### Changed
+
+- **Comparison board is now mandatory.** After generating design variants, the agent creates a comparison board with `$D compare --serve` and sends you the URL via AskUserQuestion. You interact with the board, click Submit, and the agent reads your structured feedback from `feedback.json`. No more polling loops as the primary wait mechanism.
+- **AskUserQuestion is the wait, not the chooser.** The agent uses AskUserQuestion to tell you the board is open and wait for you to finish, not to present variants inline and ask for preferences. The board URL is always included so you can click through if you lost the tab.
+- **Serve-failure fallback improved.** If the comparison board server can't start, variants are shown inline via Read tool before asking for preferences — you're no longer choosing blind.
+
+### Fixed
+
+- **Board URL corrected.** The recovery URL now points to `http://127.0.0.1:<PORT>/` (where the server actually serves) instead of `/design-board.html` (which would 404).
 
 ## [0.14.0.0] - 2026-03-30 — Design to Code
 
